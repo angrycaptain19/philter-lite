@@ -168,7 +168,7 @@ def main():
     filterer = Philter(philter_config)
 
     # map any sets, pos and regex groups we have in our config
-    filterer.map_coordinates()
+    filterer.find_phi()
 
     # transform the data
     # Priority order is maintained in the pattern list

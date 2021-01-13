@@ -934,21 +934,21 @@ title = "full street address"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like a full street address (numbers and words)"
-keyword = "addresses.full_street_address_transformed"
+keyword = "addresses.full_street_address"
 
 [[filters]]
 title = "full street address with concatenated street indicator"
 type = "regex"
 exclude = true
 notes = ""
-keyword = "addresses.full_street_address_with_concatenated_indicator_transformed"
+keyword = "addresses.full_street_address_with_concatenated_indicator"
 
 [[filters]]
 title = "number streetname city"
 type = "regex"
 exclude = true
 notes = ""
-keyword = "addresses.num_streetname_city_transformed"
+keyword = "addresses.num_streetname_city"
 
 [[filters]]
 title = "hospital name 1"
@@ -969,126 +969,126 @@ title = "number streetname noindicator suite"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like a street address with a floor number extension"
-keyword = "addresses.number_streetname_noindicator_suite_transformed"
+keyword = "addresses.number_streetname_noindicator_suite"
 
 [[filters]]
 title = "number streetname city state"
 type = "regex"
 exclude = true
 notes = ""
-keyword = "addresses.num_streetname_city_state_transformed"
+keyword = "addresses.num_streetname_city_state"
 
 [[filters]]
 title = "number streetname extension?"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like a street address (with a possible extension)"
-keyword = "addresses.num_streetname_extension_transformed"
+keyword = "addresses.num_streetname_extension"
 
 [[filters]]
 title = "number streetname san"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like the beginning of a street address followed by san (like san francsico)"
-keyword = "addresses.num_streetname_san_transformed"
+keyword = "addresses.num_streetname_san"
 
 [[filters]]
 title = "number streetname"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like the begiing of a street address"
-keyword = "addresses.num_streetname_transformed"
+keyword = "addresses.num_streetname"
 
 [[filters]]
 title = "corner of street & street"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like a street corner"
-keyword = "addresses.corner_of_street_&_street_transformed"
+keyword = "addresses.corner_of_street_&_street"
 
 [[filters]]
 title = "street and street"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like a street corner"
-keyword = "addresses.street_and_street_transformed"
+keyword = "addresses.street_and_street"
 
 [[filters]]
 title = "at street number dash street"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like a street corner"
-keyword = "addresses.at_street_number_dash_street_transformed"
+keyword = "addresses.at_street_number_dash_street"
 
 [[filters]]
 title = "at dash street"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like a street corner"
-keyword = "addresses.at_street_dash_street_transformed"
+keyword = "addresses.at_street_dash_street"
 
 [[filters]]
 title = "short street name"
 type = "regex"
 exclude = true
 notes = ""
-keyword = "addresses.short_street_name_transformed"
+keyword = "addresses.short_street_name"
 
 [[filters]]
 title = "streetname floor number"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like a street address with a suite number extension"
-keyword = "addresses.streetname_floor_number_transformed"
+keyword = "addresses.streetname_floor_number"
 
 [[filters]]
 title = "city state zip"
 type = "regex"
 exclude = true
 notes = "This should remove anything that looks like a partial street address (city, state, zip"
-keyword = "addresses.city_state_zip_transformed"
+keyword = "addresses.city_state_zip"
 
 [[filters]]
 title = "city zip"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has a city name, followed by a zip code"
-keyword = "addresses.city_zip_transformed"
+keyword = "addresses.city_zip"
 
 [[filters]]
 title = "lives in"
 type = "regex"
 exclude = true
 notes = "This should remove anything that matches pattern lives in/on"
-keyword = "addresses.lives_in_transformed"
+keyword = "addresses.lives_in"
 
 [[filters]]
 title = "city state"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has a city name, followed by a state name/abbrev"
-keyword = "addresses.city_state_transformed"
+keyword = "addresses.city_state"
 
 [[filters]]
 title = "county name"
 type = "regex"
 exclude = true
 notes = ""
-keyword = "addresses.county_name_transformed"
+keyword = "addresses.county_name"
 
 [[filters]]
 title = "in city"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has a city name"
-keyword = "addresses.in_city_transformed"
+keyword = "addresses.in_city"
 
 [[filters]]
 title = "city"
 type = "regex"
 exclude = true
 notes = "This should remove anything that matches pattern [name] [city]"
-keyword = "addresses.city_transformed"
+keyword = "addresses.city"
 
 [[filters]]
 title = "hospitalized at"
@@ -1151,91 +1151,91 @@ title = "box room"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has pattern box # followed by room #"
-keyword = "addresses.box_room_transformed"
+keyword = "addresses.box_room"
 
 [[filters]]
 title = "room box"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has pattern room # followed by box #"
-keyword = "addresses.room_box_transformed"
+keyword = "addresses.room_box"
 
 [[filters]]
 title = "floor box"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has pattern floor # followed by box #"
-keyword = "addresses.floor_box_transformed"
+keyword = "addresses.floor_box"
 
 [[filters]]
 title = "desk #"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has pattern desk #"
-keyword = "addresses.desk_#_transformed"
+keyword = "addresses.desk_#"
 
 [[filters]]
 title = "pharmacy #"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has pattern pharmacy #"
-keyword = "addresses.pharmacy_#_transformed"
+keyword = "addresses.pharmacy_#"
 
 [[filters]]
 title = "at location"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has pattern at X"
-keyword = "addresses.at_address_noindicator_transformed"
+keyword = "addresses.at_address_noindicator"
 
 [[filters]]
 title = "number cardinal direction"
 type = "regex"
 exclude = true
 notes = ""
-keyword = "addresses.number_cardinal_direction_transformed"
+keyword = "addresses.number_cardinal_direction"
 
 [[filters]]
 title = "waiting room"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has pattern waiting room"
-keyword = "addresses.waiting_room_transformed"
+keyword = "addresses.waiting_room"
 
 [[filters]]
 title = "to state"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has pattern to [state name]"
-keyword = "addresses.to_state_transformed"
+keyword = "addresses.to_state"
 
 [[filters]]
 title = "state indicator"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has pattern to [state name]"
-keyword = "addresses.state_indicator_transformed"
+keyword = "addresses.state_indicator"
 
 [[filters]]
 title = "on streetname"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has pattern on [street name]"
-keyword = "addresses.streetname_only_transformed"
+keyword = "addresses.streetname_only"
 
 [[filters]]
 title = "box"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has a box number"
-keyword = "addresses.box_transformed"
+keyword = "addresses.box"
 
 [[filters]]
 title = "room"
 type = "regex"
 exclude = true
 notes = "This should remove anything that has a room number"
-keyword = "addresses.room_#_transformed"
+keyword = "addresses.room_#"
 
 [[filters]]
 title = "YYYY/MM-YYYY/MM"
@@ -1243,7 +1243,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern YYYY/MM-YYYY/MM"
 phi_type = "DATE"
-keyword = "dates.YYYY_MM-YYYY_MM_transformed"
+keyword = "dates.YYYY_MM-YYYY_MM"
 
 [[filters]]
 title = "MM/DD/YY-MM/DD/YY"
@@ -1251,7 +1251,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern MM/DD/YY-MM/DD/YY"
 phi_type = "DATE"
-keyword = "dates.MM_DD_YY-MM_DD_YY_transformed"
+keyword = "dates.MM_DD_YY-MM_DD_YY"
 
 [[filters]]
 title = "MM/YYYY-MM/YYYY"
@@ -1259,7 +1259,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern MM/YYYY-MM/YYYY"
 phi_type = "DATE"
-keyword = "dates.MM_YYYY-MM_YYYY_transformed"
+keyword = "dates.MM_YYYY-MM_YYYY"
 
 [[filters]]
 title = "MM/YY-MM/YY"
@@ -1267,7 +1267,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern MM/YY-MM/YY"
 phi_type = "DATE"
-keyword = "dates.MM_YY-MM_YY_transformed"
+keyword = "dates.MM_YY-MM_YY"
 
 [[filters]]
 title = "MM/DD-MM/DD"
@@ -1275,7 +1275,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern MM/DD-MM/DD"
 phi_type = "DATE"
-keyword = "dates.MM_DD-MM_DD_transformed"
+keyword = "dates.MM_DD-MM_DD"
 
 [[filters]]
 title = "DD/MM-DD/MM"
@@ -1283,7 +1283,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern DD/MM-DD/MM"
 phi_type = "DATE"
-keyword = "dates.DD_MM-DD_MM_transformed"
+keyword = "dates.DD_MM-DD_MM"
 
 [[filters]]
 title = "day_name_dd_month_name_yy"
@@ -1291,7 +1291,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern day_name_dd_month_name_yy"
 phi_type = "DATE"
-keyword = "dates.day_name_dd_month_name_yy_transformed"
+keyword = "dates.day_name_dd_month_name_yy"
 
 [[filters]]
 title = "day_name_month_name_dd_yy"
@@ -1299,7 +1299,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern day_name_month_name_dd_yy"
 phi_type = "DATE"
-keyword = "dates.day_name_month_name_dd_yy_transformed"
+keyword = "dates.day_name_month_name_dd_yy"
 
 [[filters]]
 title = "day_name_month_name_dd_yyyy"
@@ -1307,7 +1307,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern day_name_month_name_dd_yyyy"
 phi_type = "DATE"
-keyword = "dates.day_name_month_name_dd_yyyy_transformed"
+keyword = "dates.day_name_month_name_dd_yyyy"
 
 [[filters]]
 title = "day_name_dd_month_name_yyyy"
@@ -1315,7 +1315,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern day_name_dd_month_name_yyyy"
 phi_type = "DATE"
-keyword = "dates.day_name_dd_month_name_yyyy_transformed"
+keyword = "dates.day_name_dd_month_name_yyyy"
 
 [[filters]]
 title = "day_name_month_name_dd"
@@ -1323,7 +1323,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern day_name_month_name_dd"
 phi_type = "DATE"
-keyword = "dates.day_name_month_name_dd_transformed"
+keyword = "dates.day_name_month_name_dd"
 
 [[filters]]
 title = "day_name_dd_month_name"
@@ -1331,7 +1331,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern day_name_dd_month_name"
 phi_type = "DATE"
-keyword = "dates.day_name_dd_month_name_transformed"
+keyword = "dates.day_name_dd_month_name"
 
 [[filters]]
 title = "dd_month_name_yy"
@@ -1339,7 +1339,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern dd_month_name_yy"
 phi_type = "DATE"
-keyword = "dates.dd_month_name_yy_transformed"
+keyword = "dates.dd_month_name_yy"
 
 [[filters]]
 title = "dd_month_name_yyyy"
@@ -1347,7 +1347,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern dd_month_name_yyyy"
 phi_type = "DATE"
-keyword = "dates.dd_month_name_yyyy_transformed"
+keyword = "dates.dd_month_name_yyyy"
 
 [[filters]]
 title = "dd_month_name"
@@ -1355,7 +1355,7 @@ type = "regex"
 exclude = true
 notes = ""
 phi_type = "DATE"
-keyword = "dates.dd_month_name_transformed"
+keyword = "dates.dd_month_name"
 
 [[filters]]
 title = "month_name_dd_yy"
@@ -1363,7 +1363,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern month_name_dd_yy"
 phi_type = "DATE"
-keyword = "dates.month_name_dd_yy_transformed"
+keyword = "dates.month_name_dd_yy"
 
 [[filters]]
 title = "month_name_dd_yyyy"
@@ -1371,7 +1371,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern month_name_dd_yyyy"
 phi_type = "DATE"
-keyword = "dates.month_name_dd_yyyy_transformed"
+keyword = "dates.month_name_dd_yyyy"
 
 [[filters]]
 title = "yy_month_name_dd"
@@ -1379,7 +1379,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern yy_month_name_dd"
 phi_type = "DATE"
-keyword = "dates.yy_month_name_dd_transformed"
+keyword = "dates.yy_month_name_dd"
 
 [[filters]]
 title = "yyyy_month_name_dd"
@@ -1387,7 +1387,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern yyyy_month_name_dd"
 phi_type = "DATE"
-keyword = "dates.yyyy_month_name_dd_transformed"
+keyword = "dates.yyyy_month_name_dd"
 
 [[filters]]
 title = "yyyy_month_name"
@@ -1395,7 +1395,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern yyyy_month_name"
 phi_type = "DATE"
-keyword = "dates.yyyy_month_name_transformed"
+keyword = "dates.yyyy_month_name"
 
 [[filters]]
 title = "month_name_dd"
@@ -1403,7 +1403,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern month_name_dd"
 phi_type = "DATE"
-keyword = "dates.month_name_dd_transformed"
+keyword = "dates.month_name_dd"
 
 [[filters]]
 title = "month_name"
@@ -1411,7 +1411,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern month_name"
 phi_type = "DATE"
-keyword = "dates.month_name_transformed"
+keyword = "dates.month_name"
 
 [[filters]]
 title = "ddmonth_nameyyyy.txt"
@@ -1419,7 +1419,7 @@ type = "regex"
 exclude = true
 notes = ""
 phi_type = "DATE"
-keyword = "dates.ddmonth_nameyyyy_transformed"
+keyword = "dates.ddmonth_nameyyyy"
 
 [[filters]]
 title = "dd_mm_yyyy"
@@ -1427,7 +1427,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern dd_mm_yyyy"
 phi_type = "DATE"
-keyword = "dates.dd_mm_yyyy_transformed"
+keyword = "dates.dd_mm_yyyy"
 
 [[filters]]
 title = "mm_dd_yyyy"
@@ -1435,7 +1435,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern mm_dd_yyyy"
 phi_type = "DATE"
-keyword = "dates.mm_dd_yyyy_transformed"
+keyword = "dates.mm_dd_yyyy"
 
 [[filters]]
 title = "dd_mm_yy"
@@ -1443,7 +1443,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern dd_mm_yy"
 phi_type = "DATE"
-keyword = "dates.dd_mm_yy_transformed"
+keyword = "dates.dd_mm_yy"
 
 [[filters]]
 title = "yy_mm_dd"
@@ -1451,7 +1451,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern yy_mm_dd"
 phi_type = "DATE"
-keyword = "dates.yy_mm_dd_transformed"
+keyword = "dates.yy_mm_dd"
 
 [[filters]]
 title = "mm_dd_yy"
@@ -1459,7 +1459,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern mm_dd_yy"
 phi_type = "DATE"
-keyword = "dates.mm_dd_yy_transformed"
+keyword = "dates.mm_dd_yy"
 
 [[filters]]
 title = "yyyy_mm_dd"
@@ -1467,7 +1467,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern yyyy_mm_dd"
 phi_type = "DATE"
-keyword = "dates.yyyy_mm_dd_transformed"
+keyword = "dates.yyyy_mm_dd"
 
 [[filters]]
 title = "mm_yyyy"
@@ -1475,7 +1475,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern mm_yyyy"
 phi_type = "DATE"
-keyword = "dates.mm_yyyy_transformed"
+keyword = "dates.mm_yyyy"
 
 [[filters]]
 title = "dd_mm"
@@ -1483,7 +1483,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern dd_mm"
 phi_type = "DATE"
-keyword = "dates.dd_mm_transformed"
+keyword = "dates.dd_mm"
 
 [[filters]]
 title = "mm_dd"
@@ -1491,7 +1491,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern mm_dd"
 phi_type = "DATE"
-keyword = "dates.mm_dd_transformed"
+keyword = "dates.mm_dd"
 
 [[filters]]
 title = "mm_yy"
@@ -1499,7 +1499,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern mm_yy"
 phi_type = "DATE"
-keyword = "dates.mm_yy_transformed"
+keyword = "dates.mm_yy"
 
 [[filters]]
 title = "month_name_of_yy"
@@ -1507,7 +1507,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern month_name_of_yy"
 phi_type = "DATE"
-keyword = "dates.month_name_of_yy_transformed"
+keyword = "dates.month_name_of_yy"
 
 [[filters]]
 title = "month_name_of_yyyy"
@@ -1515,7 +1515,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern month_name_of_yyyy"
 phi_type = "DATE"
-keyword = "dates.month_name_of_yyyy_transformed"
+keyword = "dates.month_name_of_yyyy"
 
 [[filters]]
 title = "month_name_yy"
@@ -1523,7 +1523,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern month_name_yy"
 phi_type = "DATE"
-keyword = "dates.month_name_yy_transformed"
+keyword = "dates.month_name_yy"
 
 [[filters]]
 title = "month_name_yyyy"
@@ -1531,7 +1531,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern month_name_yyyy"
 phi_type = "DATE"
-keyword = "dates.month_name_yyyy_transformed"
+keyword = "dates.month_name_yyyy"
 
 [[filters]]
 title = "day_numbering_of_month"
@@ -1539,7 +1539,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern day_numbering_of_month"
 phi_type = "DATE"
-keyword = "dates.day_numbering_of_month_transformed"
+keyword = "dates.day_numbering_of_month"
 
 [[filters]]
 title = "month_name_xst_xnd_xth"
@@ -1547,7 +1547,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern month_name_xst_xnd_xth"
 phi_type = "DATE"
-keyword = "dates.month_name_xst_xnd_xth_transformed"
+keyword = "dates.month_name_xst_xnd_xth"
 
 [[filters]]
 title = "on_or_by_the_day_numbering"
@@ -1555,7 +1555,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern on_or_by_the_day_numbering"
 phi_type = "DATE"
-keyword = "dates.on_or_by_the_day_numbering_transformed"
+keyword = "dates.on_or_by_the_day_numbering"
 
 [[filters]]
 title = "as of date"
@@ -1571,7 +1571,7 @@ type = "regex"
 exclude = true
 notes = ""
 phi_type = "DATE"
-keyword = "dates.season_of_yyyy_transformed"
+keyword = "dates.season_of_yyyy"
 
 [[filters]]
 title = "season of yy"
@@ -1579,7 +1579,7 @@ type = "regex"
 exclude = true
 notes = ""
 phi_type = "DATE"
-keyword = "dates.season_of_yy_transformed"
+keyword = "dates.season_of_yy"
 
 [[filters]]
 title = "model number"
@@ -1768,7 +1768,7 @@ title = "mixed 10"
 type = "regex"
 exclude = true
 notes = "This should remove anything with weird number/letter mashups"
-keyword = "mrn_id.mixed_010_transformed"
+keyword = "mrn_id.mixed_010"
 
 [[filters]]
 title = "CCCDDD"
@@ -2168,7 +2168,7 @@ type = "regex"
 exclude = true
 notes = "This should remove anything with pattern month_name"
 phi_type = "DATE"
-keyword = "dates.month_name_transformed"
+keyword = "dates.month_name"
 
 [[filters]]
 title = "Firstnames Blacklist"

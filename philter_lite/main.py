@@ -168,7 +168,7 @@ def main():
     for root, dirs, files in os.walk(philter_config["finpath"]):
         for file in files:
             with open(os.path.join(root, file)) as inf:
-                entry, include_map, exclude_map, data_tracker = philter.map_coordinates(
+                entry, include_map, exclude_map, data_tracker = philter.find_phi(
                     inf.read(), patterns=filters
                 )
                 if philter_config["outformat"] == "i2b2":

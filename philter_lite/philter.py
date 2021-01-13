@@ -1,4 +1,3 @@
-import json
 import os
 import re
 import subprocess
@@ -7,21 +6,12 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional, Pattern
 
 import nltk
+import toml
 from chardet.universaldetector import UniversalDetector
 from nltk.tag.stanford import StanfordNERTagger
 
 from philter_lite.coordinate_map import CoordinateMap
 from philter_lite.filters import filter_db
-
-DEFAULT_PHI_TYPE_LIST = [
-    "DATE",
-    "Patient_Social_Security_Number",
-    "Email",
-    "Provider_Address_or_Location",
-    "Age",
-    "Name",
-    "OTHER",
-]
 
 
 @dataclass(frozen=True)
@@ -81,6 +71,13 @@ class DataTracker:
     text: str
     phi: List[PhiEntry]
     non_phi: List[NonPhiEntry]
+
+
+@dataclass(frozen=True)
+class CoordinateEntry:
+    start: int
+    stop: int
+    filter: Filter
 
 
 def precompile(regex: str):
@@ -176,7 +173,7 @@ def build_filters(filter_path) -> List[Filter]:
     if not os.path.exists(filter_path):
         raise Exception("Filepath does not exist", filter_path)
     with open(filter_path, "r") as fil_file:
-        return [filter_from_dict(x) for x in json.loads(fil_file.read())]
+        return [filter_from_dict(x) for x in toml.loads(fil_file.read())["filters"]]
 
 
 def build_ner_tagger(
@@ -219,160 +216,81 @@ def get_clean(text, pre_process=r"[^a-zA-Z0-9]"):
     return cleaned
 
 
-def map_coordinates(
-    text_data: str,
-    patterns: List[Filter],
-    phi_type_list: List[str] = DEFAULT_PHI_TYPE_LIST,
-):
+def find_phi(text_data: str, patterns: List[Filter]) -> List[CoordinateEntry]:
     """ Runs the set, or regex on the input data
         generating a coordinate map of hits given
         (this performs a dry run on the data and doesn't transform)
     """
-    # create coordinate maps for each pattern
-    pattern_coords = {}
+    result = []
+
+    context_patters = []
+
     for pat in patterns:
-        pattern_coords[pat.title] = CoordinateMap()
-
-    # Get full self.include/exclude map before transform
-    data_tracker = DataTracker(text_data, [], [])
-
-    # create an intersection map of all coordinates we'll be removing
-    exclude_map = CoordinateMap()
-
-    # create an interestion map of all coordinates we'll be keeping
-    include_map = CoordinateMap()
-
-    # add file to phi_type_dict
-    phi_type_dict = {}
-    for phi_type in phi_type_list:
-        phi_type_dict[phi_type] = CoordinateMap()
-
-    # Create inital self.exclude/include for file
-    for i, pat in enumerate(patterns):
-        pattern_coord = pattern_coords[pat.title]
-
         if pat.type == "regex" and isinstance(pat, RegexFilter):
-            map_regex(text=text_data, coord_map=pattern_coord, pattern=pat)
+            hits = map_regex(text=text_data, pattern=pat)
         elif pat.type == "set" and isinstance(pat, SetFilter):
-            map_set(text=text_data, coord_map=pattern_coord, pattern=pat)
+            hits = map_set(text=text_data, pattern=pat)
         elif pat.type == "regex_context" and isinstance(pat, RegexContextFilter):
-            map_regex_context(
-                text=text_data,
-                coord_map=pattern_coord,
-                all_patterns=pattern_coords,
-                include_map=include_map,
-                pattern=pat,
-            )
+            context_patters.append(pat)
+            hits = []
         elif pat.type == "stanford_ner" and isinstance(pat, NerFilter):
-            map_ner(text=text_data, pattern=pat)
+            hits = map_ner(text=text_data, pattern=pat)
         elif pat.type == "pos_matcher" and isinstance(pat, PosFilter):
-            map_pos(text=text_data, coord_map=pattern_coord, pattern=pat)
+            hits = map_pos(text=text_data, pattern=pat)
         elif pat.type == "match_all":
-            match_all(text=text_data, coord_map=pattern_coord)
+            hits = match_all(text=text_data, pattern=pat)
         else:
             raise Exception("Error, pattern type not supported: ", pat.type)
-        get_exclude_include_maps(
-            pat,
-            text_data,
-            pattern_coord,
-            include_map,
-            exclude_map,
-            phi_type_dict,
-            data_tracker,
-        )
+        result.extend(hits)
 
-    # create intersection maps for all phi types and add them to a dictionary containing all maps
-    # get full exclude map (only updated either on-command by map_regex_context or at the very end of map_
-    # coordinates)
-    full_exclude_map = include_map.get_complement(text_data)
+    context_results = []
+    for context_pattern in context_patters:
+        # context_hits = map_regex_context(
+        #    text=text_data,
+        #    all_patterns=patterns,
+        #    include_map=result,
+        #    pattern=context_pattern,
+        # )
+        # context_results.extend(context_hits)
+        pass
 
-    for phi_type in phi_type_list:
-        for start, stop in phi_type_dict[phi_type].filecoords():
-            data_tracker.phi.append(
-                PhiEntry(
-                    start=start,
-                    stop=stop,
-                    word=text_data[start:stop],
-                    phi_type=phi_type,
-                )
-            )
+    result.extend(context_results)
 
-    return text_data, include_map, exclude_map, data_tracker
+    return result
 
 
 def map_regex(
-    text, pattern: RegexFilter, coord_map: CoordinateMap, pre_process=r"[^a-zA-Z0-9]",
-) -> CoordinateMap:
+    text, pattern: RegexFilter, pre_process=r"[^a-zA-Z0-9]",
+) -> List[CoordinateEntry]:
     """ Creates a coordinate map from the pattern on this data
         generating a coordinate map of hits given (dry run doesn't transform)
     """
     regex = pattern.data
+    result = []
 
     # All regexes except matchall
-    if regex != re.compile("."):
-        matches = regex.finditer(text)
+    matches = regex.finditer(text)
 
-        for m in matches:
-            coord_map.add_extend(m.start(), m.start() + len(m.group()))
+    for m in matches:
+        result.append(CoordinateEntry(m.start(), m.start() + len(m.group()), pattern))
 
-        return coord_map
-
-    # MATCHALL/CATCHALL
-    elif regex == re.compile("."):
-        # Split note the same way we would split for set or POS matching
-        matchall_list = re.split(r"(\s+)", text)
-        matchall_list_cleaned = []
-        for item in matchall_list:
-            if len(item) > 0:
-                if not item.isspace():
-                    split_item = re.split(r"(\s+)", re.sub(pre_process, " ", item))
-                    for elem in split_item:
-                        if len(elem) > 0:
-                            matchall_list_cleaned.append(elem)
-                else:
-                    matchall_list_cleaned.append(item)
-
-        start_coordinate = 0
-        for word in matchall_list_cleaned:
-            start = start_coordinate
-            stop = start_coordinate + len(word)
-            word_clean = re.sub(r"[^a-zA-Z0-9]+", "", word.lower().strip())
-            if len(word_clean) == 0:
-                # got a blank space or something without any characters or digits, move forward
-                start_coordinate += len(word)
-                continue
-
-            if regex.match(word_clean):
-                coord_map.add_extend(start, stop)
-
-            # advance our start coordinate
-            start_coordinate += len(word)
-
-        return coord_map
+    return result
 
 
 def map_regex_context(
     text,
     pattern: RegexContextFilter,
-    coord_map: CoordinateMap,
-    all_patterns: Dict[str, CoordinateMap],
-    include_map: CoordinateMap,
+    all_patterns: List[Filter],
+    include_map: List[CoordinateEntry],
     pre_process=r"[^a-zA-Z0-9]",
-) -> CoordinateMap:
+) -> List[CoordinateEntry]:
     """ map_regex_context creates a coordinate map from combined regex + PHI coordinates
     of all previously mapped patterns
     """
+    results = []
     regex = pattern.data
     context = pattern.context
-    try:
-        context_filter = pattern.context_filter
-    except KeyError:
-        warnings.warn(
-            f"deprecated missing context_filter field in filter {pattern.title} of "
-            f"type regex_context, assuming 'all'",
-            DeprecationWarning,
-        )
-        context_filter = "all"
+    context_filter = pattern.context_filter
 
     # Get PHI coordinates
     if context_filter == "all":
@@ -439,22 +357,23 @@ def map_regex_context(
             or (context == "left_and_right" and (phi_right and phi_left))
         ):
             for item in tokenized_matches:
-                coord_map.add_extend(item[0], item[1])
+                results.append(CoordinateEntry(item[0], item[1], pattern))
 
-    return coord_map
+    return results
 
 
-def match_all(text, coord_map: CoordinateMap) -> CoordinateMap:
+def match_all(text, pattern: Filter) -> List[CoordinateEntry]:
     """ Simply maps to the entirety of the file """
     # add the entire length of the file
-    coord_map.add(0, len(text))
-    return coord_map
+    return [CoordinateEntry(0, len(text), pattern)]
 
 
-def map_set(text, coord_map: CoordinateMap, pattern: SetFilter) -> CoordinateMap:
+def map_set(text, pattern: SetFilter) -> List[CoordinateEntry]:
     """ Creates a coordinate mapping of words any words in this set"""
 
     set_data = pattern.data
+
+    result = []
 
     # get part of speech we will be sending through this set
     # note, if this is empty we will put all parts of speech through the set
@@ -482,20 +401,22 @@ def map_set(text, coord_map: CoordinateMap, pattern: SetFilter) -> CoordinateMap
 
         if not check_pos or (check_pos and pos in pos_set):
             if word_clean in set_data or word in set_data:
-                coord_map.add_extend(start, stop)
+                result.append(CoordinateEntry(start, stop, pattern))
             else:
                 pass
 
         # advance our start coordinate
         start_coordinate += len(word)
 
-    return coord_map
+    return result
 
 
-def map_pos(text, pattern: PosFilter, coord_map: CoordinateMap) -> CoordinateMap:
+def map_pos(text, pattern: PosFilter) -> List[CoordinateEntry]:
     """ Creates a coordinate mapping of words which match this part of speech (POS)"""
 
     pos_set = set(pattern.pos)
+
+    result = []
 
     # Use pre-process to split sentence by spaces AND symbols, while preserving spaces in the split list
 
@@ -515,23 +436,23 @@ def map_pos(text, pattern: PosFilter, coord_map: CoordinateMap) -> CoordinateMap
             continue
 
         if pos in pos_set:
-            coord_map.add_extend(start, stop)
+            result.append(CoordinateEntry(start, stop, pattern))
 
         # advance our start coordinate
         start_coordinate += len(word)
 
-    return coord_map
+    return result
 
 
 def map_ner(
     text,
     pattern: NerFilter,
-    coord_map: CoordinateMap,
     stanford_ner_tagger: StanfordNERTagger,
     pre_process=r"[^a-zA-Z0-9]+",
-) -> CoordinateMap:
+) -> List[CoordinateEntry]:
     """ map NER tagging"""
     pos_set = set()
+    result = []
     if pattern.pos:
         pos_set = set(pattern.pos)
 
@@ -570,13 +491,13 @@ def map_ner(
             start = ner_set_with_locations[word][1]
             if ner_tag in pos_set:
                 stop = start + len(word)
-                coord_map.add_extend(start, stop)
+                result.append(CoordinateEntry(start, stop, pattern))
                 print("FOUND: ", word, "NER: ", ner_tag, start, stop)
 
         # advance our start coordinate
         start_coordinate += len(word)
 
-    return coord_map
+    return result
 
 
 def get_exclude_include_maps(
