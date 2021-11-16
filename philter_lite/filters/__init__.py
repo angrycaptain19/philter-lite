@@ -162,7 +162,7 @@ def _nested_get(a_dict, keys):
 
 
 def _interpolate_regex(regex_string: str):
-    regex = (
+    return (
         regex_string.replace('"""+month_name+r"""', _MONTH_NAME)
         .replace('"""+day_numbering+r"""', _DAY_NUMBERING)
         .replace('"""+day_name+r"""', _DAY_NAME)
@@ -171,4 +171,3 @@ def _interpolate_regex(regex_string: str):
         .replace('"""+state_name+r"""', _STATE_NAMES)
         .replace('"""+full_numbering+r"""', _FULL_NUMBERING)
     )
-    return regex

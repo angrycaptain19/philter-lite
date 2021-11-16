@@ -53,10 +53,7 @@ def detect_phi(
         (this performs a dry run on the data and doesn't transform)
     """
     # create coordinate maps for each pattern
-    pattern_coords = {}
-    for pat in patterns:
-        pattern_coords[pat.title] = CoordinateMap()
-
+    pattern_coords = {pat.title: CoordinateMap() for pat in patterns}
     # Get full self.include/exclude map before transform
     data_tracker = DataTracker(text_data, [], [])
 
@@ -67,10 +64,7 @@ def detect_phi(
     include_map = CoordinateMap()
 
     # add file to phi_type_dict
-    phi_type_dict = {}
-    for phi_type in phi_type_list:
-        phi_type_dict[phi_type] = CoordinateMap()
-
+    phi_type_dict = {phi_type: CoordinateMap() for phi_type in phi_type_list}
     # Also add "OTHER" type for filters that aren't appropriately labeled
     phi_type_dict["OTHER"] = CoordinateMap()
 
@@ -160,9 +154,6 @@ def _map_regex(
         for m in matches:
             coord_map.add_extend(m.start(), m.start() + len(m.group()))
 
-        return coord_map
-
-    # MATCHALL/CATCHALL
     else:
         # Split note the same way we would split for set or POS matching
         matchall_list = re.split(r"(\s+)", text)
@@ -193,7 +184,8 @@ def _map_regex(
             # advance our start coordinate
             start_coordinate += len(word)
 
-        return coord_map
+
+    return coord_map
 
 
 def _map_regex_context(
@@ -227,9 +219,10 @@ def _map_regex_context(
 
     else:
         full_exclude_map_coordinates = all_patterns[context_filter]
-        full_exclude_map = {}
-        for start, stop in full_exclude_map_coordinates.filecoords():
-            full_exclude_map[start] = stop
+        full_exclude_map = {
+            start: stop
+            for start, stop in full_exclude_map_coordinates.filecoords()
+        }
 
     # 1. Get coordinates of all include and exclude mathches
 
@@ -237,10 +230,6 @@ def _map_regex_context(
     # 2. Find all patterns expressions that match regular expression
     matches = regex.finditer(text)
     for m in matches:
-
-        # initialize phi_left and phi_right
-        phi_left = False
-        phi_right = False
 
         match_start = m.span()[0]
         match_end = m.span()[1]
@@ -252,12 +241,8 @@ def _map_regex_context(
             phi_starts.append(start)
             phi_ends.append(full_exclude_map[start])
 
-        if match_start in phi_ends:
-            phi_left = True
-
-        if match_end in phi_starts:
-            phi_right = True
-
+        phi_left = match_start in phi_ends
+        phi_right = match_end in phi_starts
         # Get index of m.group()first alphanumeric character in match
         tokenized_matches = []
         match_text = m.group()
@@ -272,13 +257,11 @@ def _map_regex_context(
                     current_end = current_start + len(element)
                     tokenized_matches.append((current_start, current_end))
 
-                    coord_tracker += len(element)
-                else:
-                    coord_tracker += len(element)
-
+                coord_tracker += len(element)
         # Check for context, and add to coordinate map
         if (
-            (context == "left" and phi_left is True)
+            context == "left"
+            and phi_left
             or (context == "right" and phi_right)
             or (context == "left_or_right" and (phi_right or phi_left))
             or (context == "left_and_right" and (phi_right and phi_left))
@@ -301,13 +284,8 @@ def _map_set(text, coord_map: CoordinateMap, pattern: SetFilter) -> CoordinateMa
 
     set_data = pattern.data
 
-    # get part of speech we will be sending through this set
-    # note, if this is empty we will put all parts of speech through the set
-    check_pos = False
     pos_set = set(pattern.pos)
-    if len(pos_set) > 0:
-        check_pos = True
-
+    check_pos = len(pos_set) > 0
     cleaned = _get_clean(text)
     pos_list = nltk.pos_tag(cleaned)
 
@@ -325,12 +303,10 @@ def _map_set(text, coord_map: CoordinateMap, pattern: SetFilter) -> CoordinateMa
             start_coordinate += len(word)
             continue
 
-        if not check_pos or (check_pos and pos in pos_set):
-            if word_clean in set_data or word in set_data:
-                coord_map.add_extend(start, stop)
-            else:
-                pass
-
+        if (not check_pos or pos in pos_set) and (
+            word_clean in set_data or word in set_data
+        ):
+            coord_map.add_extend(start, stop)
         # advance our start coordinate
         start_coordinate += len(word)
 
@@ -381,11 +357,7 @@ def _get_exclude_include_maps(
 ):
     exclude = pattern.exclude
     filter_path = pattern.title
-    if pattern.phi_type:
-        phi_type = pattern.phi_type
-    else:
-        phi_type = "OTHER"
-
+    phi_type = pattern.phi_type or "OTHER"
     for start, stop in coord_map.filecoords():
         if pattern.type != "regex_context":
             if exclude:
@@ -393,27 +365,8 @@ def _get_exclude_include_maps(
                     exclude_map.add_extend(start, stop)
                     phi_type_dict[phi_type].add_extend(start, stop)
 
-            else:
-                if not exclude_map.does_overlap(start, stop):
-                    include_map.add_extend(start, stop)
-                    data_tracker.non_phi.append(
-                        NonPhiEntry(
-                            start=start,
-                            stop=stop,
-                            word=txt[start:stop],
-                            filepath=filter_path,
-                        )
-                    )
-
-        # Add regex_context to map separately
-        else:
-            if exclude:
-                exclude_map.add_extend(start, stop)
-                include_map.remove(start, stop)
-                phi_type_dict[phi_type].add_extend(start, stop)
-            else:
+            elif not exclude_map.does_overlap(start, stop):
                 include_map.add_extend(start, stop)
-                exclude_map.remove(start, stop)
                 data_tracker.non_phi.append(
                     NonPhiEntry(
                         start=start,
@@ -422,3 +375,19 @@ def _get_exclude_include_maps(
                         filepath=filter_path,
                     )
                 )
+
+        elif exclude:
+            exclude_map.add_extend(start, stop)
+            include_map.remove(start, stop)
+            phi_type_dict[phi_type].add_extend(start, stop)
+        else:
+            include_map.add_extend(start, stop)
+            exclude_map.remove(start, stop)
+            data_tracker.non_phi.append(
+                NonPhiEntry(
+                    start=start,
+                    stop=stop,
+                    word=txt[start:stop],
+                    filepath=filter_path,
+                )
+            )
